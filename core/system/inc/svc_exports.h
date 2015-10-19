@@ -68,6 +68,17 @@
 /* note: the macro is implicitly overloaded to allow 0 to 4 32bits arguments */
 #if defined(__CC_ARM)
 
+#define UVISOR_SVC(id, metadata, ...) \
+    ({ \
+        UVISOR_MACRO_REGS_ARGS(uint32_t, ##__VA_ARGS__); \
+        UVISOR_MACRO_REGS_RETVAL(uint32_t, res); \
+        asm ( \
+            "SVC "UVISOR_TO_STRING(id)", {}, {}, {}\n" \
+            metadata \
+        ); \
+        res; \
+    })
+
 #elif defined(__GNUC__)
 
 #define UVISOR_SVC(id, metadata, ...) \
