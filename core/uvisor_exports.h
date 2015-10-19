@@ -30,7 +30,7 @@
 /* asm keyword */
 #ifndef asm
 #define asm __asm__
-#endif
+#endif /* ndef asm */
 
 /* compiler attributes */
 #define UVISOR_FORCEINLINE __attribute__((always_inline))
@@ -69,19 +69,19 @@
                                               __UVISOR_MACRO_REGS_ARGS0)(type, ##__VA_ARGS__)
 #define __UVISOR_MACRO_REGS_ARGS0(type)
 #define __UVISOR_MACRO_REGS_ARGS1(type, a0) \
-        register type r0 asm("r0") = (type) a0;
+        register type r0 asm("r0"); r0 = (type) a0;
 #define __UVISOR_MACRO_REGS_ARGS2(type, a0, a1) \
-        register type r0 asm("r0") = (type) a0; \
-        register type r1 asm("r1") = (type) a1;
+        register type r0 asm("r0"); r0 = (type) a0; \
+        register type r1 asm("r1"); r1 = (type) a1;
 #define __UVISOR_MACRO_REGS_ARGS3(type, a0, a1, a2) \
-        register type r0 asm("r0") = (type) a0; \
-        register type r1 asm("r1") = (type) a1; \
-        register type r2 asm("r2") = (type) a2;
+        register type r0 asm("r0"); r0 = (type) a0; \
+        register type r1 asm("r1"); r1 = (type) a1; \
+        register type r2 asm("r2"); r2 = (type) a2;
 #define __UVISOR_MACRO_REGS_ARGS4(type, a0, a1, a2, a3) \
-        register type r0 asm("r0") = (type) a0; \
-        register type r1 asm("r1") = (type) a1; \
-        register type r2 asm("r2") = (type) a2; \
-        register type r3 asm("r3") = (type) a3;
+        register type r0 asm("r0"); r0 = (type) a0; \
+        register type r1 asm("r1"); r1 = (type) a1; \
+        register type r2 asm("r2"); r2 = (type) a2; \
+        register type r3 asm("r3"); r3 = (type) a3;
 
 /* declare explicit callee-saved registers to hold output values */
 /* note: currently only one output value is allowed, up to 32bits */
@@ -126,7 +126,25 @@
  * toolchain-specific */
 #if defined(__CC_ARM)
 
-/* TODO/FIXME */
+#define __UVISOR_ASM_MEMORY_ACCESS_R(opcode, type, ...) \
+    ({ \
+        UVISOR_MACRO_REGS_ARGS(uint32_t, ##__VA_ARGS__); \
+        UVISOR_MACRO_REGS_RETVAL(type, res); \
+        asm ( \
+            UVISOR_TO_STRING(opcode) " r0, [r0]\n" \
+            UVISOR_NOP_GROUP \
+        ); \
+        res; \
+    })
+
+#define __UVISOR_ASM_MEMORY_ACCESS_W(opcode, type, ...) \
+    ({ \
+        UVISOR_MACRO_REGS_ARGS(uint32_t, ##__VA_ARGS__); \
+        asm ( \
+            UVISOR_TO_STRING(opcode) " r1, [r0]\n" \
+            UVISOR_NOP_GROUP \
+        ); \
+    })
 
 #elif defined(__GNUC__)
 
@@ -135,7 +153,7 @@
         UVISOR_MACRO_REGS_ARGS(uint32_t, ##__VA_ARGS__); \
         UVISOR_MACRO_REGS_RETVAL(type, res); \
         asm volatile( \
-            UVISOR_TO_STRING(opcode)" %[res], [%[r0]]\n" \
+            UVISOR_TO_STRING(opcode) " %[res], [%[r0]]\n" \
             UVISOR_NOP_GROUP \
             : UVISOR_MACRO_GCC_ASM_OUTPUT(res) \
             : UVISOR_MACRO_GCC_ASM_INPUT(__VA_ARGS__) \
@@ -146,7 +164,7 @@
 #define __UVISOR_ASM_MEMORY_ACCESS_W(opcode, type, ...) \
     UVISOR_MACRO_REGS_ARGS(uint32_t, ##__VA_ARGS__); \
     asm volatile( \
-        UVISOR_TO_STRING(opcode)" %[r1], [%[r0]]\n" \
+        UVISOR_TO_STRING(opcode) " %[r1], [%[r0]]\n" \
         UVISOR_NOP_GROUP \
         : \
         : UVISOR_MACRO_GCC_ASM_INPUT(__VA_ARGS__) \
