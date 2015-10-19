@@ -19,6 +19,21 @@
 .globl uvisor_init
 .globl uvisor_config
 .globl uvisor_ctx
+
+/* these symbols come from armcc and are here only externally defined
+ * this allows us to use a steering file to resolve them into our custom
+ * symbols: __uvisor_*_{start, end} */
+.globl Image$$ER_UVISOR_BSS_MAIN$$Base
+.globl Image$$ER_UVISOR_BSS_MAIN$$Limit
+.globl Image$$ER_UVISOR_BSS_BOXES$$Base
+.globl Image$$ER_UVISOR_BSS_BOXES$$Limit
+.globl Image$$ER_UVISOR_TEXT$$Base
+.globl Image$$ER_UVISOR_TEXT$$Limit
+.globl Image$$ER_UVISOR_CFGTBL$$Base
+.globl Image$$ER_UVISOR_CFGTBL$$Limit
+.globl Image$$ER_UVISOR_CFGTBL_PTR$$Base
+.globl Image$$ER_UVISOR_CFGTBL_PTR$$Limit
+
 .type  uvisor_init, %function
 .weak  __uvisor_mode
 
