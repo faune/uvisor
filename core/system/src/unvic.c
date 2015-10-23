@@ -219,6 +219,17 @@ int unvic_irq_level_get(void)
     return (int) NVIC_GetPriority(irqn) - UNVIC_MIN_PRIORITY;
 }
 
+void unvic_irq_priority_grouping_set(uint32_t group)
+{
+    /* verify the group number is legit */
+    if (group > 7) {
+        HALT_ERROR(NOT_ALLOWED, "Bad priority grouping level. Maximum level allowed: 7\n\r");
+    }
+
+    /* set priority grouping */
+    return NVIC_SetPriorityGrouping(group);
+}
+
 /* naked wrapper function needed to preserve LR */
 void UVISOR_NAKED unvic_svc_cx_in(uint32_t *svc_sp, uint32_t svc_pc)
 {

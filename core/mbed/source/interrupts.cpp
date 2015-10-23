@@ -136,3 +136,13 @@ int vIRQ_GetLevel(void)
         return UVISOR_SVC(UVISOR_SVC_ID_IRQ_LEVEL_GET, "");
     }
 }
+
+void vIRQ_SetPriorityGrouping(uint32_t group)
+{
+    if(__uvisor_mode == 0) {
+        NVIC_SetPriorityGrouping(group);
+    }
+    else {
+        UVISOR_SVC(UVISOR_SVC_ID_IRQ_PRIO_GRP_SET, "", group);
+    }
+}

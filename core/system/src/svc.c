@@ -40,20 +40,21 @@ void __svc_not_implemented(void)
 
 /* SVC handlers */
 const void *g_svc_vtor_tbl[] = {
-    unvic_isr_set,           //  0
-    unvic_isr_get,           //  1
-    unvic_irq_enable,        //  2
-    unvic_irq_disable,       //  3
-    unvic_irq_pending_clr,   //  4
-    unvic_irq_pending_set,   //  5
-    unvic_irq_pending_get,   //  6
-    unvic_irq_priority_set,  //  7
-    unvic_irq_priority_get,  //  8
-    benchmark_configure,     //  9
-    benchmark_start,         // 10
-    benchmark_stop,          // 11
-    halt_user_error,         // 12
-    unvic_irq_level_get,     // 13
+    unvic_isr_set,                      //  0
+    unvic_isr_get,                      //  1
+    unvic_irq_enable,                   //  2
+    unvic_irq_disable,                  //  3
+    unvic_irq_pending_clr,              //  4
+    unvic_irq_pending_set,              //  5
+    unvic_irq_pending_get,              //  6
+    unvic_irq_priority_set,             //  7
+    unvic_irq_priority_get,             //  8
+    benchmark_configure,                //  9
+    benchmark_start,                    // 10
+    benchmark_stop,                     // 11
+    halt_user_error,                    // 12
+    unvic_irq_level_get,                // 13
+    unvic_irq_priority_grouping_set,    // 14
 };
 
 /*******************************************************************************
