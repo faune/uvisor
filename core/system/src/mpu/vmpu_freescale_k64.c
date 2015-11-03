@@ -73,7 +73,7 @@ void vmpu_sys_mux_handler(uint32_t lr, uint32_t msp)
                 /* pc at fault */
                 pc = vmpu_unpriv_uint32_read(psp + (6 * 4));
 
-                /* backup fault address and status, then clear the BFARVALID flag */
+                /* backup fault address and status */
                 fault_addr = SCB->BFAR;
                 fault_status = VMPU_SCB_BFSR;
 
