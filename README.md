@@ -171,6 +171,7 @@ Note that this debug build implements blocking messages. If a debugger is not co
 * One of the available target boards:
   * [Freescale FRDM-K64F](http://developer.mbed.org/platforms/FRDM-K64F/)
   * [STMicorelectronics STM32F429I-DISCO](http://www.st.com/web/catalog/tools/FM116/SC959/SS1532/PF259090)
+  * [Nordic nRF52-DK](http://www.nordicsemi.com/eng/Products/Bluetooth-Smart-Bluetooth-low-energy/nRF52-DK)
 
 To build:
 
